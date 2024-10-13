@@ -4,6 +4,9 @@ import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 const { pageTitle } = Astro.props;
 ---
+
+<!-- HTML on every page -->
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -15,7 +18,9 @@ const { pageTitle } = Astro.props;
   <body>
     <Header />
     <h1>{pageTitle}</h1>
+<!-- slots allow specific page content -->
     <slot />
+
     <Footer />
     <script>
       import "../scripts/menu.js";
