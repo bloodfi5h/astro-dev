@@ -1,0 +1,29 @@
+---
+import FeaturedPosts from "@/components/homepage/FeaturedPosts.astro";
+import Base from "@/layouts/Base.astro";
+import FullRight from "@/layouts/FullRight.astro";
+import type { Button, Feature } from "@/types";
+import { getEntry } from "astro:content";
+
+interface Homepage {
+  banner: {
+    title: string;
+    content: string;
+    image: string;
+    button: Button;
+  };
+  features: Feature[];
+}
+
+const homepage = await getEntry("homepage", "full");
+const { banner, features }: Homepage = homepage.data;
+---
+
+<Base
+  title="Full Layout Homepage | Logbook"
+  meta_title="This is meta title"
+  description="Logbook Homepage"
+>
+  <FeaturedPosts />
+  <FullRight />
+</Base>

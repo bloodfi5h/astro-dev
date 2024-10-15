@@ -1,0 +1,45 @@
+{
+  "site": {
+    "title": "LogBook",
+    "base_url": "https://logbook-astro.onrender.com",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.png",
+    "logo_width": "150",
+    "logo_height": "30",
+    "logo_text": "Logbook"
+  },
+
+  "settings": {
+    "search": true,
+    "sticky_header": true,
+    "pagination": 6,
+    "summary_length": 200,
+    "blog_folder": "post",
+    "default_layout": "gridRight"
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "copyright": "Copyright by your company | Theme by [Themefisher](https://themefisher.com/)"
+  },
+
+  "navigation_button": {
+    "enable": true,
+    "label": "Get Started",
+    "link": "https://github.com/teamosis-products/logbook-astro"
+  },
+
+  "disqus": {
+    "enable": true,
+    "shortname": "themefisher-template",
+    "settings": {}
+  },
+
+  "metadata": {
+    "meta_author": "Themefisher",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "Logbook Astro Theme"
+  }
+}
