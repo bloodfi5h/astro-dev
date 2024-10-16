@@ -1,0 +1,62 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { Icon } from "astro-icon/components";
+import { getEntry } from "astro:content";
+
+const featureIndex = await getEntry("features", "-index");
+
+const { banner } = featureIndex.data;
+---
+
+<section class="section-gradient">
+  <div class="container">
+    <div class="section-container">
+      <div class="section-intro text-center">
+        {
+          banner.badge && (
+            <div
+              class="badge badge-white section-badge"
+              set:html={banner.badge}
+              data-aos="fade-up-sm"
+              data-aos-delay="100"
+            />
+          )
+        }
+        {
+          banner.title && (
+            <h2
+              set:html={banner.title}
+              class="section-title lg:col-6 mx-auto"
+              data-aos="fade-up-sm"
+              data-aos-delay="150"
+            />
+          )
+        }
+      </div>
+      <div class="section-content">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-20">
+          {
+            banner.featuredCardList &&
+              banner.featuredCardList.map((featureCard: any, index: number) => (
+                <div data-aos="fade-up-sm" data-aos-delay={index * 150} class="group">
+                  <div class="mb-10 overflow-hidden rounded-2xl">
+                    <ImageMod
+                      width={395}
+                      height={465}
+                      src={featureCard.image}
+                      alt={featureCard.title}
+                      quality="high"
+                      class=" w-full group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                  <Icon class="size-14 mb-8" name={featureCard.icon} />
+                  <h3 set:html={featureCard.title} class="mb-3 text-h5" />
+                  <p set:html={featureCard.description} />
+                </div>
+              ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

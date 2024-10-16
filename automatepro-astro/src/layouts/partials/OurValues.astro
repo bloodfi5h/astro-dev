@@ -1,0 +1,65 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { getEntry } from "astro:content";
+interface CoreValuesSection {
+  badge: string;
+  title: string;
+  image: string;
+  imageAlt: string;
+  list: {
+    title: string;
+    subtitle: string;
+  }[];
+}
+
+const { badge, list, title, image, imageAlt } = (await getEntry("sections", "our-values")).data as CoreValuesSection;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-container">
+      <div class="section-intro text-center">
+        {
+          badge && (
+            <div
+              class="badge badge-gradient section-badge"
+              set:html={badge}
+              data-aos="fade-up-sm"
+              data-aos-delay="100"
+            />
+          )
+        }
+        {
+          title && (
+            <h2 set:html={title} class="section-title lg:col-6 mx-auto" data-aos="fade-up-sm" data-aos-delay="200" />
+          )
+        }
+      </div>
+      <div class="section-content">
+        <div class="flex flex-col md:flex-row gap-y-10">
+          <div class="md:w-[50%] w-full">
+            <ImageMod
+              src={image}
+              alt={imageAlt}
+              width={625}
+              height={700}
+              class="size-full max-h-[700px] rounded-3xl xl:rounded-[40px] object-cover"
+              data-aos="zoom-out-sm"
+              data-aos-delay="200"
+            />
+          </div>
+          <div class="md:w-[50%] w-full flex flex-col justify-center sm:p-10 xl:p-20">
+            {
+              list.map((item, index) => (
+                <div class="mb-10" data-aos="fade-right-sm" data-aos-delay={index * 50}>
+                  <h3 class="text-h5 font-normal text-dark mb-2">{item.title}</h3>
+                  <p>{item.subtitle}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

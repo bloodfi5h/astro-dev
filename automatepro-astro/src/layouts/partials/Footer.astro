@@ -1,0 +1,109 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import Logo from "@/components/Logo.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+import social from "@/config/social.json";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const { params } = config;
+
+const { footer }: { footer: { name: string; url: string }[] } = menu;
+
+// Function to replace {year} this from string to year
+function replaceYear(text: string) {
+  const year = new Date().getFullYear();
+
+  return text.replace("{year}", year.toString());
+}
+---
+
+<footer class="section-gradient pb-0 mb-3 md:mb-5">
+  <div class="container">
+    <div class="space-y-12 md:space-y-24">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- OUTER COL 1 -->
+        <div class="lg:w-[45%] max-sm:text-center space-y-5" data-aos="fade-right-sm" data-aos-delay="100">
+          <Logo />
+          <p class="lg:col-8">{params.footer_description}</p>
+          <a class="text-dark font-medium inline-block" href={`mailto:${params.mail_address}`}>{params.mail_address}</a>
+        </div>
+        <!-- OUTER COL 2 -->
+        <div class="lg:w-[55%] grid md:grid-cols-3 gap-10 max-sm:text-center">
+          <!-- INNER COL 1 -->
+          <div data-aos="fade-right-sm" data-aos-delay="200">
+            <p class="footer-title">{menu.footer_column_1.name}</p>
+            <ul>
+              {
+                menu.footer_column_1.children.map((item) => (
+                  <li class="footer-link">
+                    <a href={item.url}>{item.name}</a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <!-- INNER COL 2 -->
+          <div data-aos="fade-right-sm" data-aos-delay="300">
+            <p class="footer-title">{menu.footer_column_2.name}</p>
+            <ul>
+              {
+                menu.footer_column_2.children.map((item) => (
+                  <li class="footer-link">
+                    <a href={item.url}>{item.name}</a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <!-- INNER COL 3 -->
+          <div data-aos="fade-right-sm" data-aos-delay="400">
+            <p class="footer-title">{menu.footer_column_3.name}</p>
+            <ul>
+              {
+                social.main.map((item) => (
+                  <li class="footer-link">
+                    <a href={item.link}>{item.name}</a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col max-md:text-center md:flex-row justify-between gap-10">
+        {
+          config.params.copyright && (
+            <div
+              data-aos="fade-right-sm"
+              data-aos-delay="100"
+              set:html={markdownify(replaceYear(config.params.copyright))}
+            />
+          )
+        }
+        <div>
+          <ul
+            class="flex flex-wrap gap-x-5 justify-center md:justify-start"
+            data-aos="fade-right-sm"
+            data-aos-delay="300"
+          >
+            {
+              menu.footer_quick_links.map((item) => (
+                <li class="footer-link">
+                  <a href={item.url}>{item.name}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      {
+        params.footer_image && (
+          <div class="flex justify-center " data-aos="zoom-out-sm" data-aos-delay="200" data-aos-duration="800">
+            <ImageMod height={92} width={1224} src={params.footer_image} alt="footer-image" class="w-full" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</footer>

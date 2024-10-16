@@ -1,0 +1,42 @@
+---
+import Base from "@/layouts/Base.astro";
+import BlogSection from "@/partials/BlogSection.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import FeaturedHero from "@/partials/FeaturedHeroSection.astro";
+import Features from "@/partials/Features.astro";
+import HomeBanner from "@/partials/HomeBanner.astro";
+import OurServices from "@/partials/OurServices.astro";
+import PricingSection from "@/partials/PricingSection.astro";
+import Testimonial from "@/partials/Testimonial.astro";
+import TrustedBrands from "@/partials/TrustedBrands.astro";
+import type { Button } from "@/types";
+import { getEntry } from "astro:content";
+
+export interface IHomeBanner {
+  badge: string;
+  title: string;
+  content: string;
+  image: string;
+  button: Button[];
+}
+
+interface PageContent {
+  banner: IHomeBanner;
+}
+
+const homepage = await getEntry("homepage", "-index");
+
+const { banner }: PageContent = homepage.data;
+---
+
+<Base>
+  <HomeBanner banner={banner} />
+  <TrustedBrands />
+  <FeaturedHero />
+  <Features />
+  <OurServices />
+  <PricingSection isPageHeader={false} />
+  <Testimonial />
+  <BlogSection />
+  <CallToAction />
+</Base>

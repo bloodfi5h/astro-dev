@@ -1,0 +1,86 @@
+---
+import ButtonOutlined from "@/components/ButtonOutlined.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { IHomeBanner } from "@/pages/index.astro";
+
+const banner = Astro.props.banner as IHomeBanner;
+const { badge, button, content, image, title } = banner;
+---
+
+<section class="hero-gradient-section">
+  <div class="container">
+    <div class="flex flex-col items-center text-center gap-16 lg:gap-24">
+      <div>
+        <div class="flex justify-center mb-8">
+          <div class="badge badge-white animateBadge text-transparent" set:html={markdownify(badge)} />
+        </div>
+        {
+          title && (
+            <h1
+              class="hero-title mb-4 lg:col-10 mx-auto"
+              data-aos="fade-up-sm"
+              data-aos-delay="0"
+              set:html={markdownify(title)}
+            />
+          )
+        }
+        {
+          content && (
+            <p
+              class="mb-8 text-h6 lg:px-10 lg:col-9 mx-auto text-balance"
+              data-aos="fade-up-sm"
+              data-aos-delay="100"
+              set:html={markdownify(content)}
+            />
+          )
+        }
+        {
+          button && (
+            <div class="flex flex-wrap justify-center gap-5" data-aos="fade-up-sm" data-aos-delay="200">
+              {button
+                .filter((elem) => elem.enable)
+                .map((btn, index) => {
+                  const isFirstButton = index === 0;
+
+                  return isFirstButton ? (
+                    <PrimaryButton as="a" link={btn.link} label={btn.label} />
+                  ) : (
+                    <ButtonOutlined as="a" link={btn.link} label={btn.label} />
+                  );
+                })}
+            </div>
+          )
+        }
+      </div>
+      {
+        image && (
+          <div class="flex justify-center mt-8" data-aos="fade-up-sm" data-aos-delay="250">
+            <ImageMod width={1224} height={704} src={image} alt={title} class="w-full" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+<script>
+  function badgeAnimateInit() {
+    const animateBadge = document.querySelector(".animateBadge");
+    if (animateBadge) {
+      const badgeText = animateBadge.innerHTML;
+      const letters = badgeText.split("");
+
+      animateBadge.innerHTML = letters
+        .map((word, index) => {
+          const delay = index * 25;
+          return `<span style="animation-delay: ${delay}ms">${word}</span>`;
+        })
+        .join("");
+    }
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    badgeAnimateInit();
+  });
+</script>

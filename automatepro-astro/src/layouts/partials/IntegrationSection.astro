@@ -1,0 +1,46 @@
+---
+import { getEntry } from "astro:content";
+
+const sectionData = await getEntry("sections", "integration-tools");
+
+interface IntegrationItem {
+  image: string;
+  title: string;
+}
+
+interface sectionDataProps {
+  title: string;
+  list: IntegrationItem[];
+}
+
+const { title, list } = sectionData.data as sectionDataProps;
+---
+
+<section class="section-gradient">
+  <div class="container">
+    <div class="section-container">
+      <div class="section-intro text-center">
+        <h2 class="section-title" set:html={title} data-aos="fade-up-sm" data-aos-delay="100" />
+      </div>
+      <div class="section-content">
+        <div class="flex flex-wrap gap-5 items-center justify-center">
+          {
+            list.length > 0 &&
+              list.map((item: IntegrationItem, index: number) => (
+                <div
+                  class="bg-gradient-to-tr from-gradient_start/20 to-white rounded-full flex items-center p-4 gap-x-4 border border-dark/70"
+                  data-aos="fade-up-sm"
+                  data-aos-delay={index * 50}
+                >
+                  <img src={item.image} alt={item.title} class="w-[64px] aspect-square" />
+                  <p class="text-center text-h6 pr-4">{item.title}</p>
+                </div>
+              ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+```
+

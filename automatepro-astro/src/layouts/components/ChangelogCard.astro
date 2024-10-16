@@ -1,0 +1,26 @@
+---
+import DynamicIcon from "@/helpers/DynamicIcon";
+
+const { changelog } = Astro.props;
+const { version, date, logs } = changelog;
+---
+
+<div
+  class="border border-border bg-theme-light hover:bg-dark/5 transition-colors duration-300 rounded-2xl p-10 xl:p-14"
+>
+  <h3 class="flex text-h5 gap-3 mb-4">{`Version ${version}  (${date})`}</h3>
+
+  <ul>
+    {
+      logs.map((log: any) => (
+        <li class="mb-2 translate-x-4 relative before:content-['-'] before:absolute before:left-[-1rem] before:text-lg">
+          <span class="text-lg">{log}</span>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="mt-7 flex items-center gap-3">
+    <DynamicIcon icon="FaCalendarDays" />
+    <span class="text-dark font-medium">{date}</span>
+  </div>
+</div>

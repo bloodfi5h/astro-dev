@@ -1,0 +1,26 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+
+import ImageMod from "./ImageMod.astro";
+
+const { title, subtitle, image, imageAlt, slug, ...props } = Astro.props;
+---
+
+<article class="border border-border rounded-2xl bg-theme-light hover:bg-linear-gradient p-6" {...props}>
+  <div class="flex flex-col justify-between gap-8 h-full">
+    <div>
+      <ImageMod
+        src={image}
+        alt={imageAlt}
+        width={450}
+        height={450}
+        class="mb-6 w-full aspect-square object-cover rounded-lg"
+      />
+
+      <a href={"/case-studies/" + slug} class="u-underline">
+        <h4 class="mb-2 text-lg font-medium s-underline inline" set:html={markdownify(title)} />
+      </a>
+      <p set:html={markdownify(subtitle)} />
+    </div>
+  </div>
+</article>

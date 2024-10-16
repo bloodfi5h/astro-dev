@@ -1,0 +1,28 @@
+---
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import FaqSection from "@/partials/FaqSection.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import PricingSection from "@/partials/PricingSection.astro";
+import PricingTableCompare from "@/partials/PricingTableCompare.astro";
+import { getEntry } from "astro:content";
+
+interface HeroSection {
+  badge: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  alt: string;
+}
+
+const pageIndex = await getEntry("pricing", "-index");
+const hero = pageIndex.data.hero as HeroSection;
+---
+
+<Base {...pageIndex.data}>
+  <PageHeader badge={hero.badge} title={hero.title} />
+  <PricingSection isPageHeader="true" />
+  <PricingTableCompare />
+  <FaqSection />
+  <CallToAction />
+</Base>

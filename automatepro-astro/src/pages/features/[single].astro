@@ -1,0 +1,159 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import FaqSection from "@/partials/FaqSection.astro";
+import IntegrationSection from "@/partials/IntegrationSection.astro";
+import type { DynamicPageHeaderProps } from "@/types/index";
+
+export async function getStaticPaths() {
+  const FOLDER_PATH = "features";
+  const posts = await getSinglePage(FOLDER_PATH);
+
+  const paths = posts.map((post) => ({
+    params: {
+      single: post.slug,
+    },
+    props: { post },
+  }));
+  return paths;
+}
+
+interface Thumbnail {
+  src: string;
+  size: "horizontal" | "square" | "vertical";
+}
+
+interface MissionItem {
+  logo: string;
+  title: string;
+  description: string;
+}
+
+interface IntegrationItem {
+  title: string;
+  logo: string;
+  description: string;
+}
+
+interface FeatureSinglePageProps extends DynamicPageHeaderProps {
+  thumbnail: Thumbnail;
+  heroImage: string;
+  ourMission: {
+    enable: boolean;
+    title: string;
+    description: string;
+    list: MissionItem[];
+  };
+  integrationWithOtherTools: {
+    enable: boolean;
+    title: string;
+    list: IntegrationItem[];
+  };
+}
+
+const { post } = Astro.props;
+// const { Content } = await post.render();
+const { title, meta_title, description, heroImage, ourMission, integrationWithOtherTools } =
+  post.data as FeatureSinglePageProps;
+---
+
+<Base title={title} meta_title={meta_title} description={description} image={heroImage}>
+  <section class="hero-gradient-section bg-gradient-to-tl">
+    <div class="container">
+      <div class="section-container">
+        <div class="section-intro lg:col-8 mx-auto text-center z-20 relative">
+          <div class="section-badge">
+            <div class="badge badge-white" data-aos="fade-up-sm" data-aos-delay="100">Features Details</div>
+          </div>
+          <h1 class="section-title" set:html={title} data-aos="fade-up-sm" data-aos-delay="200" />
+        </div>
+        <div class="section-content lg:col-11 mx-auto relative">
+          <div class="section-image relative z-20">
+            <ImageMod
+              width={1122}
+              height={500}
+              src={heroImage}
+              alt={title}
+              class="w-full"
+              data-aos="fade-up-sm"
+              data-aos-delay="300 "
+            />
+          </div>
+          <div
+            class="bg-gradient_start w-2/4 h-32 blur-2xl absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full z-10"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {
+    ourMission.enable && (
+      <section class="section">
+        <div class="container">
+          <div class="flex flex-col lg:flex-row lg:items-center gap-10">
+            <div class="lg:w-[45%]" data-aos="fade-up-sm" data-aos-delay="100">
+              <h2 set:html={ourMission.title} class="text-balance mb-5" />
+              <p>{ourMission.description}</p>
+            </div>
+            <div class="lg:w-[55%]" data-aos="fade-up-sm" data-aos-delay="200">
+              <div class="grid sm:grid-cols-2 gap-10">
+                {ourMission.list.map((item) => (
+                  <div class="space-y-6">
+                    <img src={item.logo} alt={item.title} width={48} height={48} class="min-w-12 aspect-square" />
+                    <div class="space-y-3">
+                      <h3 class="text-lg font-primary font-medium text-dark" set:html={item.title} />
+                      <p>{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <IntegrationSection />
+
+  {
+    integrationWithOtherTools.enable && (
+      <section class="section">
+        <div class="container">
+          <div class="section-container">
+            <div class="section-intro">
+              <h2
+                set:html={integrationWithOtherTools.title}
+                class="section-title lg:col-8 mx-auto text-center"
+                data-aos="fade-up-sm"
+                data-aos-delay="100"
+              />
+            </div>
+            <div class="section-content">
+              <div class="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-3  grid-flow-dense gap-10">
+                {integrationWithOtherTools.list.map((item, index) => (
+                  <div class="space-y-6" data-aos="fade-up-sm" data-aos-delay={index * 100}>
+                    <ImageMod
+                      src={item.logo}
+                      alt={item.title}
+                      width={52}
+                      height={52}
+                      class="min-w-[48px] aspect-square object-contain"
+                    />
+                    <h3 class="text-lg font-primary font-medium text-dark" set:html={item.title} />
+                    <p>{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+  <FaqSection />
+  <CallToAction />
+</Base>

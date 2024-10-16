@@ -1,0 +1,28 @@
+---
+import type { IUserTestimonial } from "@/partials/Testimonial.astro";
+import ImageMod from "./ImageMod.astro";
+
+const testimonial = Astro.props.testimonial as IUserTestimonial;
+---
+
+<div class="border border-border rounded-2xl bg-theme-light p-6 h-full w-[450px]">
+  <div class="flex justify-between items-center gap-5 md:gap-10">
+    <div class="flex items-center gap-x-5">
+      <ImageMod width={64} height={64} class="rounded-full" src={testimonial.avatar} alt={testimonial.name} />
+      <div class="flex flex-col gap-y-1">
+        <span class="text-dark font-medium">{testimonial.name}</span>
+        <span class="text-text/60">{testimonial.designation}</span>
+      </div>
+    </div>
+    <ImageMod
+      width={150}
+      height={32}
+      class="mt-4"
+      src={testimonial.companyLogo}
+      alt="Company Logo"
+      class="h-[38px] w-auto"
+    />
+  </div>
+  <hr class="my-5" />
+  <p class="text-text/90" set:html={testimonial.content} />
+</div>

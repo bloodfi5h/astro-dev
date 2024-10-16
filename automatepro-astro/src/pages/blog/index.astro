@@ -1,0 +1,75 @@
+---
+import BlogCard from "@/components/BlogCard.astro";
+import FeaturedBlogPostCard from "@/components/FeaturedBlogPostCard.astro";
+import Pagination from "@/components/Pagination.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import { markdownify } from "@/lib/utils/textConverter";
+import CallToAction from "@/partials/CallToAction.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import { getEntry } from "astro:content";
+
+const COLLECTION_FOLDER = "blog";
+const postIndex = (await getEntry(COLLECTION_FOLDER, "-index")).data;
+const pageHeaderIndexData = postIndex.page_header;
+const readMoreIndexData = postIndex.read_more_blogs;
+const posts = await getSinglePage(COLLECTION_FOLDER);
+let sortedPosts = sortByDate(posts);
+const featuredPost = sortedPosts.shift();
+const visiblePosts = sortedPosts.slice(0, config.settings.pagination);
+const totalPages: number = Math.ceil(posts.length / config.settings.pagination);
+---
+
+<Base
+  title={postIndex.title}
+  meta_title={postIndex.meta_title}
+  image={postIndex.image}
+  description={postIndex.description}
+>
+  <PageHeader
+    badge={pageHeaderIndexData?.badge}
+    title={pageHeaderIndexData?.title}
+    subtitle={pageHeaderIndexData?.subtitle}
+  />
+  <section class="section pb-16">
+    <div class="container">
+      <FeaturedBlogPostCard mostRecentPost={featuredPost} />
+    </div>
+  </section>
+
+  {
+    readMoreIndexData && (
+      <section class="section">
+        <div class="container">
+          <div class="section-container gap-y-2">
+            <div class="section-intro">
+              {readMoreIndexData.title && (
+                <h3
+                  class="title !text-h4 font-semibold"
+                  set:html={markdownify(readMoreIndexData.title)}
+                  data-aos="fade-up-sm"
+                  data-aos-delay="100"
+                />
+              )}
+            </div>
+
+            <div class="section-content">
+              <div class="grid md:grid-cols-2 gap-6">
+                {visiblePosts.map((post, index) => {
+                  const aosDelay = 100 * (index % 2);
+                  return <BlogCard data-aos="fade-up-sm" data-aos-delay={aosDelay} data={post} aosDelay={aosDelay} />;
+                })}
+              </div>
+              <div class="mt-10">
+                <Pagination section={COLLECTION_FOLDER} totalPages={totalPages} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+  <CallToAction />
+</Base>

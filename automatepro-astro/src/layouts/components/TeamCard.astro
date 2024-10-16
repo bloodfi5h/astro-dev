@@ -1,0 +1,27 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import ImageMod from "./ImageMod.astro";
+
+const { image, name, position, aosDelay } = Astro.props;
+---
+
+<div class="rounded-2xl border border-border p-4 group" data-aos="fade-up-sm" data-aos-delay={aosDelay}>
+  <div class="overflow-hidden rounded-xl">
+    {
+      image && (
+        <ImageMod
+          width={256}
+          height={260}
+          src={image}
+          alt={name}
+          class="w-full  group-hover:scale-105 transition-transform duration-500 aspect-[256/260 object-cover]"
+          loading="lazy"
+        />
+      )
+    }
+  </div>
+  <div class="text-left mt-4">
+    {name && <p class="mb-1 text-dark font-medium text-base" set:html={markdownify(name)} />}
+    {position && <p class="text-dark/70 text-sm" set:html={markdownify(position)} />}
+  </div>
+</div>

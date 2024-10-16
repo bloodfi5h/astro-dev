@@ -1,0 +1,25 @@
+---
+const { as, link, label, isFullWidth, ...props } = Astro.props;
+---
+
+{
+  as === "a" ? (
+    <a href={link} class:list={["btn btn-primary", { "w-full": isFullWidth }]} {...props}>
+      <div class="sr-only">{label}</div>
+      <span class="opacity-0">{label}</span>
+      <div class="transform-btn-text">
+        <span>{label}</span>
+        <span>{label}</span>
+      </div>
+    </a>
+  ) : (
+    <button class:list={["btn btn-primary", { "w-full": isFullWidth }]} {...props}>
+      <div class="sr-only">{label}</div>
+      <span class="opacity-0">{label}</span>
+      <div class="transform-btn-text">
+        <span>{label}</span>
+        <span>{label}</span>
+      </div>
+    </button>
+  )
+}

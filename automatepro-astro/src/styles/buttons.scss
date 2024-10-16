@@ -1,0 +1,39 @@
+.btn {
+  @apply inline-block rounded-full px-8 py-3 font-semibold capitalize transition;
+}
+
+.btn-sm {
+  @apply rounded-sm px-4 py-1.5 text-sm;
+}
+
+.btn-animated {
+  @apply relative overflow-hidden;
+
+  &::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-b from-transparent via-slate-400 to-transparent blur-lg z-10 h-1/2 transition-transform duration-500;
+  }
+  &:hover::before {
+    @apply translate-y-full;
+  }
+  > .transform-btn-text {
+    @apply absolute inset-x-0 top-[20%] bottom-[20%] overflow-hidden;
+
+    > span {
+      @apply size-full flex justify-center items-center transition-transform duration-700;
+    }
+  }
+  &:hover > .transform-btn-text {
+    > span {
+      @apply -translate-y-full;
+    }
+  }
+}
+
+.btn-primary {
+  @apply btn btn-animated bg-primary border border-primary text-white font-medium;
+}
+
+.btn-outline {
+  @apply btn btn-animated before:via-white bg-body text-dark font-medium border border-border hover:bg-primary hover:text-white transition-colors duration-500;
+}

@@ -1,0 +1,112 @@
+---
+import ButtonOutlined from "@/components/ButtonOutlined.astro";
+import ImageMod from "@/components/ImageMod.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import BlogSection from "@/partials/BlogSection.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import IntegrationSection from "@/partials/IntegrationSection.astro";
+import Testimonial from "@/partials/Testimonial.astro";
+
+export async function getStaticPaths() {
+  const CASE_FOLDER = "case-studies";
+  const posts = await getSinglePage(CASE_FOLDER);
+  const paths = posts.map((post) => ({
+    params: {
+      single: post.slug,
+    },
+    props: { post },
+  }));
+
+  return paths;
+}
+
+interface CaseStudiesDetailsProps {
+  badge: string;
+  title: string;
+  subtitle: string;
+  meta_title: string;
+  description: string;
+  draft: boolean;
+  image: string;
+  imageAlt: string;
+  button1: {
+    enable: boolean;
+    label: string;
+    link: string;
+  };
+  button2: {
+    enable: boolean;
+    label: string;
+    link: string;
+  };
+}
+
+const { post } = Astro.props;
+const { badge, button1, button2, description, draft, image, imageAlt, meta_title, subtitle, title } = Astro.props.post
+  .data as CaseStudiesDetailsProps;
+
+const CASE_FOLDER = "case-studies";
+const cases = await getSinglePage(CASE_FOLDER);
+
+const { Content } = await post.render();
+---
+
+<Base title={title} meta_title={meta_title} description={description} image={image}>
+  <section class="hero-gradient-section bg-gradient-to-tl pb-10">
+    <div class="container lg:max-w-[1079px]">
+      <div class="flex flex-col items-center text-center gap-6">
+        <div>
+          <div class="badge badge-white mb-8">{badge}</div>
+          <h1
+            class="lg:text-h1 lg:leading-[1.2] text-center mb-6 text-balance"
+            data-aos="fade-up-sm"
+            data-aos-delay="100"
+            set:html={markdownify(title)}
+          />
+          <p
+            class="mb-8 text-h6 text-text/80 lg:w-[600px] mx-auto"
+            data-aos="fade-up-sm"
+            data-aos-delay="150"
+            set:html={markdownify(subtitle)}
+          />
+          <div class="flex justify-center items-center gap-4 mb-28" data-aos="fade-up-sm" data-aos-delay="200">
+            {button1.enable && <PrimaryButton as="a" label={button1.label} link={button1.link} />}
+            {
+              button2.enable && (
+                <ButtonOutlined
+                  as="a"
+                  label={button2.label}
+                  link={button2.link}
+                  class="btn btn-primary btn-primary-outline"
+                />
+              )
+            }
+          </div>
+          <div data-aos="fade-up-sm" data-aos-delay="150">
+            <ImageMod
+              src={image}
+              alt={imageAlt}
+              width={1200}
+              height={475}
+              class="h-[350px] lg:h-[500px] w-full rounded-3xl object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container lg:max-w-[1079px]">
+      <div class="content">
+        <Content />
+      </div>
+    </div>
+  </section>
+  <IntegrationSection />
+  <Testimonial />
+  <BlogSection />
+  <CallToAction />
+</Base>

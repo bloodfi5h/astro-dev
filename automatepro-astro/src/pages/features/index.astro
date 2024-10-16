@@ -1,0 +1,21 @@
+---
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import FaqSection from "@/partials/FaqSection.astro";
+import FeaturedHeroSection from "@/partials/FeaturedHeroSection.astro";
+import Features from "@/partials/Features.astro";
+
+import OurServices from "@/partials/OurServices.astro";
+import { getEntry } from "astro:content";
+
+const pageIndex = await getEntry("features", "-index");
+const { title, description, meta_title } = pageIndex.data;
+---
+
+<Base title={title} meta_title={meta_title} description={description}>
+  <FeaturedHeroSection />
+  <Features />
+  <OurServices />
+  <FaqSection />
+  <CallToAction />
+</Base>

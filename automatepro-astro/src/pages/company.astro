@@ -1,0 +1,42 @@
+---
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import CompanyHero from "@/partials/CompanyHero.astro";
+import CompanyStatsVideoSection from "@/partials/CompanyStatsVideoSection.astro";
+import OpenPositions from "@/partials/OpenPositions.astro";
+import OurTeamMembers from "@/partials/OurTeamMembers.astro";
+import OurValues from "@/partials/OurValues.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import Testimonial from "@/partials/Testimonial.astro";
+import TrustedBrands from "@/partials/TrustedBrands.astro";
+import type { DynamicPageHeaderProps } from "@/types";
+import { getEntry } from "astro:content";
+
+interface PageProps extends DynamicPageHeaderProps {
+  pageHeader: {
+    badge: string;
+    title: string;
+    subtitle: string;
+  };
+  hero: {
+    title: string;
+    subtitle: string;
+    image: string;
+  }[];
+}
+
+const pageIndex = (await getEntry("company", "-index")).data as PageProps;
+const { hero, pageHeader } = pageIndex;
+---
+
+<Base {...pageIndex}>
+  <PageHeader badge={pageHeader.badge} title={pageHeader.title} />
+  <CompanyHero hero={hero} />
+  <TrustedBrands />
+  <OurValues />
+  <CompanyStatsVideoSection />
+  <Testimonial />
+  <OurTeamMembers />
+  <OpenPositions />
+  <CallToAction />
+</Base>

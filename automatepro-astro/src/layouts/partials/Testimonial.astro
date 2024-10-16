@@ -1,0 +1,86 @@
+---
+export interface IUserTestimonial {
+  name: string;
+  designation: string;
+  avatar: string;
+  companyLogo: string;
+  content: string;
+}
+
+interface UserTestimonials {
+  enable: boolean;
+  badge: string;
+  title: string;
+  description: string;
+  topTestimonials: IUserTestimonial[];
+  bottomTestimonials: IUserTestimonial[];
+}
+
+import TestimonialCard from "@/components/TestimonialCard.astro";
+import { getEntry } from "astro:content";
+const userTestimonials: UserTestimonials = (await getEntry("sections", "testimonial")).data;
+---
+
+{
+  userTestimonials.enable && (
+    <section class="section">
+      <div class="section-container overflow-hidden">
+        <div class="section-intro ">
+          <div class="container text-center xl:max-w-[800px] text-balance mx-auto">
+            <div class="section-badge badge badge-gradient" data-aos="fade-up-sm" data-aos-delay="100">
+              {userTestimonials.badge}
+            </div>
+            <h2 class="title" data-aos="fade-up-sm" data-aos-delay="150">
+              {userTestimonials.title}
+            </h2>
+            <p class="subtitle" set:html={userTestimonials.description} data-aos="fade-up-sm" data-aos-delay="250" />
+          </div>
+        </div>
+        <div class="section-content space-y-5">
+          <div
+            class="inf-slider"
+            data-inf-scroll-speed="30"
+            data-inf-direction="normal"
+            data-inf-slide-pause-on-hover="true"
+            data-aos="fade-up-sm"
+            data-aos-delay={250}
+          >
+            <div class="inf-slide-track space-x-5 h-full">
+              {userTestimonials.topTestimonials &&
+                userTestimonials.topTestimonials.map((testimonial) => (
+                  <div class="inf-slide">
+                    <TestimonialCard testimonial={testimonial} />
+                  </div>
+                ))}
+            </div>
+          </div>
+          <div
+            class="inf-slider"
+            data-inf-scroll-speed="30"
+            data-inf-direction="reverse"
+            data-inf-slide-pause-on-hover="true"
+            data-aos="fade-up-sm"
+            data-aos-delay={300}
+          >
+            <div class="inf-slide-track space-x-5 h-full">
+              {userTestimonials.bottomTestimonials &&
+                userTestimonials.bottomTestimonials.map((testimonial, index) => (
+                  <div class="inf-slide">
+                    <TestimonialCard testimonial={testimonial} />
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import { initInfiniteSliders } from "@/lib/utils/infiniteSlider";
+
+  document.addEventListener("astro:page-load", () => {
+    initInfiniteSliders();
+  });
+</script>

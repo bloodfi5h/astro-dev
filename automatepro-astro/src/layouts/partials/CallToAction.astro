@@ -1,0 +1,48 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import PrimaryButton from "@/components/PrimaryButton.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import { getEntry } from "astro:content";
+const call_to_action = await getEntry("sections", "call-to-action");
+---
+
+{
+  call_to_action.data.enable && (
+    <section class="section-gradient overflow-hidden pb-0 mb-20">
+      <div class="container text-center">
+        <div class="lg:col-8 mx-auto">
+          <h2
+            set:html={markdownify(call_to_action.data.title)}
+            class="mb-3 lg:mb-4 text-h2 lg:text-h1 font-semibold xl:text-[4.7rem]"
+            data-aos="fade-up-sm"
+            data-aos-delay="100"
+          />
+          <p
+            set:html={markdownify(call_to_action.data.description)}
+            class="mb-6 text-h6"
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+          />
+          {call_to_action.data.button.enable && (
+            <PrimaryButton
+              as="a"
+              link={call_to_action.data.button.link}
+              label={call_to_action.data.button.label}
+              data-aos="fade-up-sm"
+              data-aos-delay="250"
+            />
+          )}
+        </div>
+        <ImageMod
+          class="w-full h-auto mt-14 xl:mt-28"
+          src={call_to_action.data.image}
+          width={1300}
+          height={450}
+          alt="cta-image"
+          data-aos="fade-up-sm"
+          data-aos-delay="300"
+        />
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,110 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import DynamicIcon from "@/helpers/DynamicIcon";
+import { getEntry } from "astro:content";
+import LiteYouTubeEmbed from "react-lite-youtube-embed";
+import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
+
+interface StatsAndVideoSectionTypes {
+  enable: boolean;
+  enableCountupAnimation: boolean;
+  stats: {
+    title: string;
+    value: string;
+    suffix: string;
+  }[];
+  video: {
+    enable: boolean;
+    previewImage: string;
+    youtubeVideoId: string;
+    icon: string;
+    buttonText: string;
+  };
+}
+
+const { enable, stats, video, enableCountupAnimation }: StatsAndVideoSectionTypes = (
+  await getEntry("sections", "company-stats-video")
+).data;
+---
+
+{
+  enable && (
+    <section class="section">
+      <div class="container">
+        <div
+          class="section-container relative after:absolute after:w-full after:h-full after:lg:h-1/2 after:-z-10 after:bg-linear-gradient after:rounded-[1.8rem] after:md:rounded-[2.2rem] after:xl:rounded-[96px]"
+          data-aos="fade-up-sm"
+          data-aos-delay="200"
+        >
+          <div class="section-intro p-16 pb-0 xl:pt-24 ">
+            <div class="flex justify-around flex-wrap gap-10">
+              {stats.length &&
+                stats.map((stat) => (
+                  <div class="text-center">
+                    <h3 class=" text-secondary text-h3 xl:text-h2">
+                      <span
+                        data-countup={enableCountupAnimation}
+                        data-countup-number={stat.value}
+                        data-countup-duration="2000"
+                        data-countup-easing="ease-in"
+                      >
+                        {stat.value}
+                      </span>
+                      <span>{stat.suffix}</span>
+                    </h3>
+                    <p class="text-h6">{stat.title}</p>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <div class="section-content max-lg:pb-10">
+            <div class="col-10 mx-auto relative">
+              <ImageMod
+                class="rounded-[1.8rem] md:rounded-[2.2rem] xl:rounded-[72px]"
+                src={video.previewImage}
+                alt={video.buttonText}
+                width={1020}
+                height={630}
+              />
+              {/* Action Button */}
+
+              <div class="absolute inset-0 flex items-center justify-center">
+                <button
+                  class="btn btn-primary btn-lg flex items-center gap-x-2 text-h6 font-normal"
+                  aria-label="Play Video"
+                  data-modal-trigger="modal"
+                >
+                  <DynamicIcon className="inline-block" icon={video.icon} />
+                  <span class="">{video.buttonText}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" style={{ display: "none" }}>
+        <div class="modal-overlay" style={{ display: "none" }} />
+        <div class="modal-content w-[950px]">
+          <button aria-label="Close Modal" class="modal-close grid place-items-center z-10">
+            <DynamicIcon icon={"FaXmark"} />
+          </button>
+          <div class="video-container">
+            <iframe
+              id="youtube-iframe"
+              src={`https://www.youtube.com/embed/${video.youtubeVideoId}?enablejsapi=1`}
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+<script>
+  import { countUp } from "@/lib/utils/countUp";
+  import { initVideoModal } from "@/lib/utils/modalYoutube";
+  document.addEventListener("astro:page-load", () => {
+    countUp();
+    initVideoModal();
+  });
+</script>

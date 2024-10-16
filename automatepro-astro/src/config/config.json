@@ -1,0 +1,45 @@
+{
+  "site": {
+    "title": "AutomatePro",
+    "base_url": "https://automatepro-astro.vercel.app",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.png",
+    "logo_width": "208",
+    "logo_height": "36",
+    "logo_text": "AutomatePro"
+  },
+
+  "settings": {
+    "pagination": 4,
+    "summary_length": 120,
+    "blog_folder": "blog"
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "mail_address": "hello@automaterpro.com",
+    "footer_description": "Make your database provisioning cloud-native using our database generation",
+    "footer_image": "/images/footer-bg.png",
+    "copyright": "Copyright © {year} Automate Pro, Inc. All Rights Reserved"
+  },
+
+  "navigation_button": {
+    "enable": true,
+    "label": "Get This Template",
+    "link": "https://themefisher.com/products/automatepro-astro"
+  },
+
+  "disqus": {
+    "enable": true,
+    "shortname": "themefisher-template",
+    "settings": {}
+  },
+
+  "metadata": {
+    "meta_author": "Themefisher",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "AutomatePro Saas & Startup Template"
+  }
+}

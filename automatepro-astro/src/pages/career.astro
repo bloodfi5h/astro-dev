@@ -1,0 +1,126 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import DynamicIcon from "@/helpers/DynamicIcon";
+import Base from "@/layouts/Base.astro";
+import CallToAction from "@/partials/CallToAction.astro";
+import OpenPositions from "@/partials/OpenPositions.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import { getEntry } from "astro:content";
+
+interface CareerPageTypes {
+  title: string;
+  meta_title: string;
+  description: string;
+  draft: boolean;
+
+  pageHeader: {
+    badge: string;
+    title: string;
+    video: {
+      enable: boolean;
+      icon: string;
+      previewImage: string;
+      youtubeVideoId: string;
+      buttonText: string;
+    };
+  };
+
+  officePerks: {
+    enable: boolean;
+    list: {
+      title: string;
+      logo: string;
+      description: string;
+    }[];
+  };
+}
+
+const pageIndex = (await getEntry("career", "-index")).data as CareerPageTypes;
+const { pageHeader, officePerks } = pageIndex;
+---
+
+<Base {...pageIndex}>
+  <PageHeader badge={pageHeader.badge} title={pageHeader.title} />
+  {
+    pageHeader.video.enable && (
+      <section class="section">
+        <div class="container">
+          <div class=" w-full ">
+            <div
+              class="relative p-2 bg-linear-gradient rounded-[1.8rem] md:rounded-[2.2rem] xl:rounded-[72px]"
+              data-aos="fade-up-sm"
+              data-aos-delay="300"
+            >
+              <ImageMod
+                class="rounded-[1.8rem] md:rounded-[2.2rem] xl:rounded-[64px] w-full aspect-video"
+                src={pageHeader.video.previewImage}
+                alt={pageHeader.video.buttonText}
+                width={1025}
+                height={576}
+              />
+              {/* Action Button */}
+              <div class="absolute inset-0 flex items-center justify-center">
+                <button
+                  class="btn btn-primary btn-lg flex items-center gap-x-2 text-h6 font-normal"
+                  data-modal-trigger="modal"
+                  data-src={`https://www.youtube.com/embed/${pageHeader.video.youtubeVideoId}`}
+                >
+                  <DynamicIcon className="inline-block" icon={pageHeader.video.icon} />
+                  <span class="">{pageHeader.video.buttonText}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+  {
+    officePerks.enable && (
+      <section class="section">
+        <div class="container">
+          <div class="grid lg:grid-rows-2 md:grid-cols-2 lg:grid-cols-3  grid-flow-dense gap-10">
+            {officePerks.list.map((item, index) => (
+              <div data-aos="fade-up-sm" data-aos-delay={50 * (index * 2)}>
+                <ImageMod
+                  src={item.logo}
+                  alt={item.title}
+                  width={52}
+                  height={52}
+                  class="min-w-[48px] aspect-square object-contain mb-6"
+                />
+                <h3 class="text-lg font-primary font-medium text-dark mb-3" set:html={item.title} />
+                <p>{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        {pageHeader.video.enable && (
+          <div class="modal" style={{ display: "none" }}>
+            <div class="modal-overlay" style={{ display: "none" }} />
+            <div class="modal-content w-[950px]">
+              <button aria-label="Close Modal" class="modal-close grid place-items-center z-10">
+                <DynamicIcon icon={"FaXmark"} />
+              </button>
+              <div class="video-container">
+                <iframe
+                  id="youtube-iframe"
+                  src={`https://www.youtube.com/embed/${pageHeader.video.youtubeVideoId}?enablejsapi=1`}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+    )
+  }
+  <OpenPositions />
+  <CallToAction />
+</Base>
+<script>
+  import { initVideoModal } from "@/lib/utils/modalYoutube";
+  document.addEventListener("astro:page-load", () => {
+    initVideoModal();
+  });
+</script>

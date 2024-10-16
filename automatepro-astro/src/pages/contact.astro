@@ -1,0 +1,130 @@
+---
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import CallToAction from "@/partials/CallToAction.astro";
+import FaqSection from "@/partials/FaqSection.astro";
+import PageHeader from "@/partials/PageHeader.astro";
+import TrustedBrands from "@/partials/TrustedBrands.astro";
+import type { DynamicPageHeaderProps } from "@/types";
+import { getEntry } from "astro:content";
+
+interface PageProps extends DynamicPageHeaderProps {
+  pageHeader: {
+    badge: string;
+    title: string;
+    subtitle: string;
+  };
+  card: {
+    title: string;
+    label: string;
+    list: string[];
+  };
+}
+const { contact_form_action, mail_address } = config.params;
+const contact = (await getEntry("contact", "-index")).data as PageProps;
+const { pageHeader, card } = contact;
+---
+
+<Base {...contact}>
+  <PageHeader badge={pageHeader.badge} title={pageHeader.title} />
+  <section class="section relative overflow-hidden">
+    <div class="container">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <div class="w-full lg:w-[43%]" data-aos="fade-up-sm" data-aos-delay="300">
+          <div class="rounded-2xl bg-linear-gradient px-10 py-8 h-full flex flex-col gap-10 justify-between">
+            <div>
+              <h3 class="text-h3-sm mb-8" set:html={markdownify(card.title)} />
+              <p class="text-lg font-medium text-dark mb-4" set:html={markdownify(card.label)} />
+              <ul class="tick-list">
+                {card.list.map((point) => <li set:html={markdownify(point)} />)}
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-h6 text-dark font-medium mb-2">Email Address</h4>
+              <a href={`mailto:${mail_address}`} class="text-base text-text">{mail_address}</a>
+            </div>
+          </div>
+        </div>
+        <div class="w-full lg:w-[57%]" data-aos="fade-up-sm" data-aos-delay="350">
+          <div class="border border-border bg-theme-light rounded-2xl px-10 py-8">
+            <form action={contact_form_action} method="post">
+              <div class="grid grid-cols-2 gap-6">
+                <div class="col-span-2 sm:col-span-1">
+                  <label for="firstName" class="form-label">First Name *</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    required
+                    aria-required="true"
+                    class="form-input"
+                    placeholder="Your First Name"
+                  />
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                  <label for="lastName" class="form-label">Last Name *</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    class="form-input"
+                    required
+                    aria-required="true"
+                    placeholder="Your Last Name"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label for="email" class="form-label">Email *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    required
+                    aria-required="true"
+                    placeholder="johndoe@example.com"
+                  />
+                </div>
+
+                <div class="col-span-2">
+                  <label for="subject" class="form-label">Subject *</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    class="form-input"
+                    required
+                    aria-required="true"
+                    placeholder="Write Your Subject Here"
+                  />
+                </div>
+
+                <div class="col-span-2">
+                  <label for="message" class="form-label">Write Message *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="3"
+                    class="form-input h-auto"
+                    required
+                    aria-required="true"
+                    placeholder="Write Your Message Here"></textarea>
+                </div>
+
+                <div class="col-span-2">
+                  <button type="submit" class="btn bg-primary py-5 px-7 border-secondary text-theme-light leading-none">
+                    Send a Message
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <TrustedBrands />
+  <FaqSection />
+  <CallToAction />
+</Base>

@@ -1,0 +1,81 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { getEntry } from "astro:content";
+
+interface ServiceItem {
+  title: string;
+  subtitle: string;
+  image: string;
+  list: string[];
+}
+
+interface SolutionsContent {
+  badge: string;
+  title: string;
+  list: ServiceItem[];
+}
+
+const { badge, list, title } = (await getEntry("sections", "our-services")).data as SolutionsContent;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-container">
+      <div class="section-intro text-center">
+        {
+          badge && (
+            <div class="section-badge badge badge-gradient" data-aos="fade-up-sm" data-aos-delay="100">
+              {badge}
+            </div>
+          )
+        }
+        {
+          title && (
+            <h2 set:html={title} class="section-title lg:col-6 mx-auto" data-aos="fade-up-sm" data-aos-delay="200" />
+          )
+        }
+      </div>
+      <div class="section-content space-y-6">
+        {
+          list &&
+            list.map((item, index) => (
+              <div
+                class=" p-10 xl:px-[4.5rem] xl:py-24 border border-border bg-theme-light rounded-2xl"
+                data-aos="fade-up-sm"
+                data-aos-delay="200"
+              >
+                <div
+                  class:list={[
+                    "flex flex-col lg:items-center gap-16 lg:gap-24 xl:gap-32",
+                    {
+                      "lg:flex-row": index % 2 === 0,
+                    },
+                    {
+                      "lg:flex-row-reverse": index % 2 !== 0,
+                    },
+                  ]}
+                >
+                  {/* LEFT SIDE */}
+                  <div class="lg:w-1/2">
+                    <h3 class="text-h3-sm mb-4" set:html={item.title} />
+                    <p class="text-lg mb-14" set:html={item.subtitle} />
+                    {item.list && (
+                      <ul class="tick-list ">
+                        {item.list.map((point) => (
+                          <li set:html={point} />
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  {/* RIGHT SIDE */}
+                  <div class="lg:w-1/2 mx-auto">
+                    <ImageMod src={item.image} alt="" width={475} height={333} />
+                  </div>
+                </div>
+              </div>
+            ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

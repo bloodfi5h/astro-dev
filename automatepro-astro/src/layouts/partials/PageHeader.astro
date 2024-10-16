@@ -1,0 +1,32 @@
+---
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import { humanize } from "@/lib/utils/textConverter";
+
+const { title, badge, enableBreadcrumbs }: { title?: string; badge?: string; enableBreadcrumbs?: boolean } =
+  Astro.props;
+---
+
+<section>
+  <div class="container text-center">
+    <div class="bg-body px-8 pt-14 pb-20">
+      {
+        badge && (
+          <p class="badge badge-gradient mb-8" data-aos="fade-up-sm" data-aos-delay="100">
+            {badge}
+          </p>
+        )
+      }
+      {
+        title && (
+          <h1
+            class="font-semibold tracking-tight"
+            set:text={humanize(title)}
+            data-aos="fade-up-sm"
+            data-aos-delay="200"
+          />
+        )
+      }
+      {enableBreadcrumbs && <Breadcrumbs className="mt-6" data-aos="fade-up-sm" data-aos-delay="300" />}
+    </div>
+  </div>
+</section>

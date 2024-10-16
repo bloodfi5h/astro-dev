@@ -1,0 +1,45 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+
+const { hero } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="flex flex-col gap-y-20 xl:gap-y-40">
+      {
+        hero.map((item: any, index: number) => {
+          const isEven = index % 2 !== 0;
+          return (
+            <div
+              class:list={[
+                "flex flex-col lg:items-center gap-10 xl:gap-24",
+                { "lg:flex-row-reverse ": isEven },
+                { "lg:flex-row": !isEven },
+              ]}
+            >
+              <div class="lg:w-[55%]" data-aos="fade-up-sm" data-aos-delay="200">
+                <h2 class=" font-bold mb-5">{item.title}</h2>
+                <p set:html={item.subtitle} />
+              </div>
+              <div class="lg:w-[45%] w-full" data-aos="zoom-out-sm" data-aos-delay="200">
+                <div class="relative ">
+                  <div
+                    class={`absolute top-3 -right-5 w-full  aspect-video blur-2xl rounded-full -z-10 ${!isEven ? "bg-tertiary/30" : "bg-secondary/30"}`}
+                  />
+                  <ImageMod
+                    width={510}
+                    height={515}
+                    src={item.image}
+                    alt={item.title}
+                    class="size-full rounded-3xl xl:rounded-[40px] object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

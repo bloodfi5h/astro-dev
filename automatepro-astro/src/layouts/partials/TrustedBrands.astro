@@ -1,0 +1,33 @@
+---
+import ImageMod from "@/components/ImageMod.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import { getEntry } from "astro:content";
+
+interface TrustedBrands {
+  title: string;
+  list: string[];
+}
+
+const { title, list } = (await getEntry("sections", "trusted-brands")).data as TrustedBrands;
+---
+
+<section class="section">
+  <div class="container text-center">
+    <p class="text-h6 mb-10" data-aos="fade-up-sm" data-aos-delay="100" set:html={markdownify(title)} />
+    <div class="flex justify-center flex-wrap gap-6 lg:gap-14 items-center">
+      {
+        list.map((brand, index) => (
+          <ImageMod
+            data-aos="fade-up-sm"
+            data-aos-delay={index * 100}
+            width={300}
+            height={64}
+            src={brand}
+            alt="Brand"
+            class=" max-h-16 w-auto"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

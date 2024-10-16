@@ -1,0 +1,34 @@
+---
+import config from "@/config/config.json";
+import dateFormat from "@/lib/utils/dateFormat";
+import ImageMod from "./ImageMod.astro";
+
+const { blog_folder }: { summary_length: number; blog_folder: string } = config.settings;
+const { data, ...props } = Astro.props;
+const { title, image, date } = data.data;
+---
+
+<div {...props} class="border border-border rounded-2xl bg-theme-light p-6 group">
+  {
+    image && (
+      <div class=" rounded-xl overflow-hidden mb-5">
+        <ImageMod
+          class="size-full aspect-[344/240] object-cover group-hover:scale-105 transition-transform duration-500"
+          src={image}
+          alt={title}
+          width={445}
+          height={340}
+          format="webp"
+        />
+      </div>
+    )
+  }
+  <div class="badge badge-gradient text-sm mb-3">{dateFormat(date)}</div>
+  <h3 class="mb-3 text-h5 font-semibold">
+    <a href={`/${blog_folder}/${data.slug}`} class="u-underline">
+      <span class="s-underline">{title}</span>
+    </a>
+  </h3>
+
+  <p class="line-clamp-2" set:html={data.body} />
+</div>

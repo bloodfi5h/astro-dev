@@ -1,0 +1,138 @@
+{
+  "main": [
+    {
+      "name": "Pages",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Contact",
+          "url": "/contact"
+        },
+        {
+          "name": "Blog",
+          "url": "/blog"
+        },
+        {
+          "name": "Authors",
+          "url": "/authors"
+        },
+        {
+          "name": "Integrations",
+          "url": "/integrations"
+        },
+        {
+          "name": "Career",
+          "url": "/career"
+        },
+        {
+          "name": "Changelog",
+          "url": "/changelog"
+        },
+        {
+          "name": "Case Studies",
+          "url": "/case-studies"
+        },
+        {
+          "name": "Case Studies Details",
+          "url": "/case-studies/post-1"
+        },
+        {
+          "name": "Company",
+          "url": "/company"
+        },
+
+        {
+          "name": "404 Page",
+          "url": "/404"
+        },
+        {
+          "name": "Terms & Conditions",
+          "url": "/terms"
+        },
+        {
+          "name": "Privacy Policy",
+          "url": "/privacy-policy"
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "url": "/features"
+    },
+    {
+      "name": "Pricing",
+      "url": "/pricing"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact"
+    }
+  ],
+  "footer": [
+    {
+      "name": "Elements",
+      "url": "/elements"
+    },
+    {
+      "name": "Privacy Policy",
+      "url": "/privacy-policy"
+    }
+  ],
+  "footer_column_1": {
+    "name": "Features",
+    "children": [
+      {
+        "name": "Lead Management",
+        "url": "/features/feature-2"
+      },
+      {
+        "name": "Email Marketing",
+        "url": "/features/feature-1"
+      },
+      {
+        "name": "CRM Integration",
+        "url": "/features/feature-4"
+      },
+      {
+        "name": "Social Media Management",
+        "url": "/features/feature-3"
+      }
+    ]
+  },
+  "footer_column_2": {
+    "name": "Navigation",
+    "children": [
+      {
+        "name": "Case Studies",
+        "url": "/case-studies"
+      },
+      {
+        "name": "Pricing",
+        "url": "/pricing"
+      },
+      {
+        "name": "Contact",
+        "url": "/contact"
+      },
+      {
+        "name": "Career",
+        "url": "/career"
+      }
+    ]
+  },
+
+  "footer_column_3": {
+    "name": "Social Handle"
+  },
+  "footer_quick_links": [
+    {
+      "name": "Terms and Condition",
+      "url": "/terms"
+    },
+    {
+      "name": "Privacy Policy",
+      "url": "/privacy-polity"
+    }
+  ]
+}

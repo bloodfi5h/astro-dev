@@ -1,0 +1,71 @@
+html {
+  @apply text-base-sm md:text-base;
+}
+
+body {
+  @apply bg-body text-base font-primary font-normal leading-relaxed text-text;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-secondary tracking-tighter leading-tight text-dark;
+}
+
+h1,
+.h1 {
+  @apply text-h1-sm md:text-h1 font-semibold;
+}
+
+h2,
+.h2 {
+  @apply text-h2-sm md:text-h2 font-medium;
+}
+
+h3,
+.h3 {
+  @apply text-h3-sm md:text-h3;
+}
+
+h4,
+.h4 {
+  @apply text-h4;
+}
+
+h5,
+.h5 {
+  @apply text-h5;
+}
+
+h6,
+.h6 {
+  @apply text-h6;
+}
+
+b,
+strong {
+  @apply font-semibold;
+}
+
+code {
+  @apply after:border-none;
+}
+
+blockquote {
+  @apply relative;
+  &::before {
+    content: "";
+    @apply absolute left-4 rounded-full  w-14 h-20 translate-y-[0.25rem] md:translate-y-[0.05rem];
+    background-image: url("/images/quote.png");
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  > p {
+    @apply text-h5 leading-normal my-0 #{!important};
+    @apply pl-14 mb-4 last:mb-0 text-text;
+  }
+}

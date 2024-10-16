@@ -1,0 +1,146 @@
+---
+import { markdownify } from "@/lib/utils/textConverter";
+import { getEntry } from "astro:content";
+interface PlanAvailability {
+  title: string;
+  basic: boolean;
+  premium: boolean;
+  enterprise: boolean;
+}
+
+interface ComparisonFeature {
+  title: string;
+
+  availability: PlanAvailability[];
+}
+
+interface PlanComparisonSection {
+  badge: string;
+  title: string;
+  subtitle: string;
+  category: {
+    basic: string;
+    premium: string;
+    enterprise: string;
+  };
+  comparison: ComparisonFeature[];
+}
+
+const planComparisonSectionData = (await getEntry("sections", "pricing-table-plans-comparison"))
+  .data as PlanComparisonSection;
+const { badge, title, subtitle, comparison, category } = planComparisonSectionData;
+---
+
+<section class="section">
+  <div class="container">
+    <div class="section-container">
+      <div class="section-intro text-center">
+        {
+          badge && (
+            <div
+              class="badge badge-gradient section-badge"
+              set:html={markdownify(badge)}
+              data-aos="fade-up-sm"
+              data-aos-delay="100"
+            />
+          )
+        }
+        {
+          title && (
+            <h2
+              class="title text-balance lg:col-8 mx-auto"
+              set:html={markdownify(title)}
+              data-aos="fade-up-sm"
+              data-aos-delay="200"
+            />
+          )
+        }
+        {
+          subtitle && (
+            <p class="subtitle mx-auto" set:html={markdownify(subtitle)} data-aos="fade-up-sm" data-aos-delay="300" />
+          )
+        }
+      </div>
+
+      <div class="section-content">
+        {
+          comparison.length && (
+            <div data-aos="fade-up-sm" data-aos-delay="200">
+              <ul class="hidden md:grid grid-cols-4 [&>li]:justify-self-center [&>li]:self-center [&>li]:text-dark [&>li]:text-h6 [&>li]:font-medium pb-6">
+                <li />
+                <li>{category.basic}</li>
+                <li>{category.premium}</li>
+                <li>{category.enterprise}</li>
+              </ul>
+              {comparison.map((feature) => {
+                return (
+                  <div>
+                    <div class="flex items-center gap-8 bg-gradient-to-tl from-gradient_start/60 to-gradient_stop/60 p-6 rounded-2xl">
+                      <img src="/images/logo/stacks.svg" alt="" class="icon" />
+                      <h3 class="text-h6 font-medium" set:html={markdownify(feature.title)} />
+                    </div>
+                    <ul>
+                      {feature.availability.map((availability) => {
+                        return (
+                          <li class="p-6 border-b border-border last:border-transparent ">
+                            <ul class="grid gap-6 md:grid-cols-4 md:[&>li]:justify-self-center md:[&>li]:self-center ">
+                              <li class="text-xl font-bold md:font-normal md:text-lg text-dark !justify-self-start">
+                                {availability.title}
+                              </li>
+                              <li class="flex items-center justify-between gap-8">
+                                <span class="md:hidden text-dark ">{category.basic}</span>
+                                {availability.basic ? (
+                                  <img
+                                    src="/images/logo/rounded-tick.svg"
+                                    width={20}
+                                    height={20}
+                                    class="size-5"
+                                    alt=""
+                                  />
+                                ) : (
+                                  <img src="/images/logo/cross.svg" alt="" width={20} height={20} class="size-5" />
+                                )}
+                              </li>
+                              <li class="flex items-center justify-between gap-8">
+                                <span class="md:hidden text-dark ">{category.premium}</span>
+                                {availability.premium ? (
+                                  <img
+                                    src="/images/logo/rounded-tick.svg"
+                                    width={20}
+                                    height={20}
+                                    class="size-5"
+                                    alt=""
+                                  />
+                                ) : (
+                                  <img src="/images/logo/cross.svg" alt="" width={20} height={20} class="size-5" />
+                                )}
+                              </li>
+                              <li class="flex items-center justify-between gap-8">
+                                <span class="md:hidden text-dark ">{category.enterprise}</span>
+                                {availability.enterprise ? (
+                                  <img
+                                    src="/images/logo/rounded-tick.svg"
+                                    width={20}
+                                    height={20}
+                                    class="size-5"
+                                    alt=""
+                                  />
+                                ) : (
+                                  <img src="/images/logo/cross.svg" alt="" width={20} height={20} class="size-5" />
+                                )}
+                              </li>
+                            </ul>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
