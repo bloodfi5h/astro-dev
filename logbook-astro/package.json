@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "LogBook Astro SAAS Theme",
   "author": "themefiser",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "packageManager": "yarn@1.22.19",
   "scripts": {
     "dev": "yarn generate-json && astro dev",
